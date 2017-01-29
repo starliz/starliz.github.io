@@ -2,10 +2,10 @@
 layout: default
 title: Pages for Linux Basics course homeworks (Haaga-Helia UAS, 2017)
 ---
-<div class="blurb">
-	<h1>Hi there o/</h1>
-	<p>The course I study now is <a href="https://terokarvinen.com/2017/agenda-for-linux-basics-dat8tf063-29-spring-2017">Linux Basics by Tero Karvinen</a>,</p>
-	<p>and I will put my homeworks here.</p>
-	<p>Assignment 01: <a href="/h1_live_usb">xubuntu live USB.</a></p>
-	<p>Assignment 02: <a href="/h2_licensing">about licenses.</a></p>
-</div><!-- /.blurb -->
+	<h1>{{ page.title }}</h1>
+	<ul class="posts">
+
+	  {% for post in site.posts %}
+	    <li><span>{{ post.date | date_to_string }}</span> » <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
+	  {% endfor %}
+	</ul>
