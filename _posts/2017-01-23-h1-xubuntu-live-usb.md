@@ -3,10 +3,9 @@ layout: posts
 title: "Assignment 1, Xubuntu live USB"
 date: 2017-01-23
 ---
+#### Linux Basics (dat8tf063-29)
 
-#### Assignment 1, Xubuntu live USB
-
-Tmp link to home page: <https://starliz.github.io/>
+#### HAAGA-HELIA University of Applied Sciences.
 
 I took the course Linux basics at Haaga-Helia UAS to boost my confidence as a Linux professional,
 to recall things I used to do before but partially forgot. 
