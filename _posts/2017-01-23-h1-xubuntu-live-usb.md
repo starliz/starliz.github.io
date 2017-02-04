@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: posts
 title: "Assignment 1, Xubuntu live USB"
 date: 2017-01-23
 ---
