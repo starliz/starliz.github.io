@@ -14,3 +14,5 @@ I don't have formal ICT education, I'm biologist, so I needed some technical cou
 and knowledge which I got working in ICT.
 
 Here is the first homework in [PDF file](https://github.com/starliz/hh_linux_basics/raw/master/h1_live_usb.pdf)
+
+##### “ Copyright 2017 Lidia Zalevskaya, GNU General Public License, version 3 or later.”
