@@ -249,6 +249,7 @@ The default web page loads in Google Chrome:
 
 ![3 apacherunsindocker.png](_images/01apacherunsindocker.png)
 
+![raw url to image](https://github.com/starliz/starliz.github.io/blob/master/_images/01-apache-runs-in-docker.png)
 
 
 
