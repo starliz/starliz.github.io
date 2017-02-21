@@ -7,7 +7,7 @@ date: 2017-02-17
 
 #### HAAGA-HELIA University of Applied Sciences.
 
-### LAMP inside docker:
+### LAMP inside a docker:
 
 I was in doubts about installing LAMP into my home directory, but I got a hint to use docker.
 So I decided to use it for this homework. 
@@ -19,9 +19,13 @@ and isolate applications from one another and the underlying infrastructure".
 
 It has client-server architecture, so user interacts with daemon via client (``docker`` CLI utility).
 
-A Docker **image** is a read-only template with instructions for creating a Docker container. - **build**
+A Docker **image** is a read-only template with instructions for creating a Docker container. Each image consists of a series of layers. - **build**
 
-A Docker **container** is a runnable instance of a Docker image. - **run**
+A Docker **container** is a runnable instance of a Docker image. - **run**, start, stop, move, or delete.
+
+A docker **registry** is a library of images. A registry can be public or private. - **distribution**
+
+
 
 ### Docker Installation:
 
@@ -128,11 +132,13 @@ This message shows that your installation appears to be working correctly.
 ...
 ````
 
-### Crafting Dockerfile for building custom docker image
+### Crafting initial Dockerfile for building custom image
 
-[The example of Dockerfile I took here](https://github.com/tutumcloud/lamp/blob/master/Dockerfile)
+Since the task was to set up LAMP step by step, I couldn't just take ready made sollution and run it, but I had to try to create my own image.
 
-This is my initial Dockerfile:
+[The example of Dockerfile I took here](https://github.com/tutumcloud/lamp/blob/master/Dockerfile) and some parts of supervisor config from [here: supervisord.conf](https://github.com/nickistre/docker-lamp/blob/ubuntu-14.04/supervisord.conf)
+
+This is my initial Dockerfile (Each instruction creates a new layer in the image.):
 
 ````
 # use some ubuntu blueprint image
@@ -156,31 +162,106 @@ It executed all preset step, downloaded Ubuntu image and installed additional pa
 
 Useful commands to administrate:
 * ``docker --help`` 
-* ``docker run -i --rm liz/lamp /bin/bash`` - "-i" run interactive (Keep STDIN open even if not attached), and "-rm" to automatically remove the container when it exits.
+* ``docker run -i --rm liz/lamp /bin/bash`` - "-i" run interactive (Keep STDIN open even if not attached) and run bash process, "-rm" to automatically remove the container when it exits.
+    * Commands to use [inside] container: 
+    * ``ss -ltpn`` - display listening sockets.
+    * ``curl http://localhost/`` -  to request default http page.
+* ``docker run -p 8080:80 liz/lamp`` - port -p external:internal, about exposing ports see[expose-incoming-ports](https://docs.docker.com/engine/reference/run/#expose-incoming-ports)
 * ``docker ps -a`` - Show all containers (default shows just running)
 * ``docker images`` = ``docker image ls``
 
+"The Docker image is read-only. When Docker runs a container from an image, it adds a read-write layer on top of the image in which needed app runs."
 
-Programming Apache to start when ""docker run..."":
+### Further Dockerfile development: programming Apache to start when running docker:
 
-Copied script ``start-apache2.sh`` to my docker directory (where Dockerfile is), and also ``apache_default`` and ``apache2.conf``.
+Copied to my docker directory (where Dockerfile is):
+* ``start-apache2.sh``, 
+* ``apache_default``, 
+* ``apache2.conf`` 
+* ``supervisord.conf``
 
+start-apache2.sh:
+````
+#!/bin/bash
+service apache2 start
+````
 
+apache_default: copied from [github.com/tutumcloud/lamp/.../apache_default](https://github.com/tutumcloud/lamp/blob/master/apache_default)
 
+apache2.conf - WHERE THE HELL IT CAME FROM???? but important is that it has in the end: ``ServerName localhost``
 
+supervisord.conf: 
+````
+[supervisord]
+nodaemon=true                ; start in foreground 
 
+[program:apache2]
+command=/bin/bash -c "source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"
+````
+Now web server can be run inside a container and accessed via normal Browser on the same laptop.
+
+````
+[liz@localhost liz-docker-lamp]$ docker run -p 8080:80 liz/lamp
+...
+2017-02-21 20:43:34,079 CRIT Supervisor running as root (no user in config file)
+2017-02-21 20:43:34,081 INFO supervisord started with pid 1
+2017-02-21 20:43:35,084 INFO spawned: 'apache2' with pid 9
+2017-02-21 18:03:02,247 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+````
+Dockerfile at this point:
+
+````
+FROM ubuntu:trusty
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update -y
+
+# Installing apache, curl ...
+RUN apt-get -y install apache2 curl
+RUN mkdir -p /var/lock/apache2 /var/run/apache2
+
+# Add image configuration and scripts
+ADD start-apache2.sh /start-apache2.sh
+
+# use prepared configuration file for Apache
+ADD apache2.conf /etc/apache2/apache2.conf
+RUN chmod 755 /*.sh
+
+# config to enable .htaccess
+ADD apache_default /etc/apache2/sites-available/000-default.conf
+
+# install supervisord
+RUN apt-get install -y supervisor
+RUN mkdir -p /var/log/supervisor
+ADD supervisord.conf /etc/
+
+# map apache 80 port
+# EXPOSE informs Docker that the container listens on the specified network ports
+EXPOSE 80
+
+CMD ["supervisord", "-n"]
+````
+
+The default web page loads in Google Chrome:
+
+![1 apache_runs_in_docker.png](_images/01_apache_runs_in_docker.png)
+
+![2 apache-runs-in-docker.png](_images/01-apache-runs-in-docker.png)
+
+![3 apacherunsindocker.png](_images/01apacherunsindocker.png)
 
 
 
 
 ### Used articles:
 
-[Out-of-the-box LAMP image (PHP+MySQL) usage: ](https://github.com/tutumcloud/lamp)
+[Out-of-the-box LAMP image (PHP+MySQL) usage](https://github.com/tutumcloud/lamp)
 
 [Docker installation](https://docs.docker.com/engine/installation/linux/fedora/)
 
 [Some docker post-installation set up](https://docs.docker.com/engine/installation/linux/linux-postinstall/)
 
 [Understanding Docker](https://docs.docker.com/engine/understanding-docker/)
+
+[Docker cheat sheet](https://github.com/wsargent/docker-cheat-sheet)
 
 ##### “ Copyright 2017 Lidia Zalevskaya, GNU General Public License, version 3 or later.”
