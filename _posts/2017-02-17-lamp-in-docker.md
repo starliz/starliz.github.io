@@ -7,10 +7,11 @@ date: 2017-02-17
 
 #### HAAGA-HELIA University of Applied Sciences.
 
+#### Last modified on 23.02.2017
+
 ### LAMP inside a docker:
 
-I was in doubts about installing LAMP into my home directory, but I got a hint to use docker.
-So I decided to use it for this homework. 
+I was hesitant about installing LAMP into my home directory, but I got a hint to use docker. So I decided to try it for this homework. 
 
 "Docker containers wrap a piece of software in a complete filesystem that contains everything needed to run 
 and isolate applications from one another and the underlying infrastructure".
@@ -19,11 +20,11 @@ and isolate applications from one another and the underlying infrastructure".
 
 It has client-server architecture, so user interacts with daemon via client (``docker`` CLI utility).
 
-A Docker **image** is a read-only template with instructions for creating a Docker container. Each image consists of a series of layers. - **build**
+A Docker **image** is a read-only template with instructions for creating a Docker container. Each image consists of a series of layers. - **build** component.
 
-A Docker **container** is a runnable instance of a Docker image. - **run**, start, stop, move, or delete.
+A Docker **container** is a runnable instance of a Docker image. - **run** component ()start, stop, move, or delete).
 
-A docker **registry** is a library of images. A registry can be public or private. - **distribution**
+A docker **registry** is a library of images. A registry can be public or private. - **distribution** component.
 
 
 
@@ -41,7 +42,7 @@ docker-selinux.x86_64                2:1.10.3-9.git667d6d1.fc24                 
 ````
 "Available" tells me that package is not installed. Same way I made sure that I've got ``dnf-plugins-core``.
 
-To setup repo for installing and updating docker:
+To setup repo for installing and updating docker I did:
 
 ````
 sudo dnf config-manager --add-repo https://docs.docker.com/engine/installation/linux/repo_files/fedora/docker.repo
@@ -134,7 +135,7 @@ This message shows that your installation appears to be working correctly.
 
 ### Crafting initial Dockerfile for building custom image
 
-Since the task was to set up LAMP step by step, I couldn't just take ready made sollution and run it, but I had to try to create my own image.
+Since the task was to set up LAMP step by step, I couldn't just take ready made solution and run it, but I had to try to create my own image.
 
 [The example of Dockerfile I took here](https://github.com/tutumcloud/lamp/blob/master/Dockerfile) and some parts of supervisor config from [here: supervisord.conf](https://github.com/nickistre/docker-lamp/blob/ubuntu-14.04/supervisord.conf)
 
@@ -149,16 +150,16 @@ ENV DEBIAN_FRONTEND noninteractive
 # Get information on the newest versions of packages and their dependencies.
 RUN apt-get update
 # "apt-get -y" - Assume "yes" as answer to all prompts and run non-interactively. 
-RUN apt-get -y install apache2
+RUN apt-get -y install apache2 curl
 ````
-Next step is to try building. I create directory, put my Dockerfile there and build "liz/lamp":
+Next step is to try building. On my laptop I create directory, put my Dockerfile there and build "liz/lamp":
 
 ````
 mkdir liz-docker-lamp
 cd ./liz-docker-lamp/
 docker build -t liz/lamp .
 ````
-It executed all preset step, downloaded Ubuntu image and installed additional packages & apache2.
+It executed all preset steps, downloaded Ubuntu image and installed additional packages & apache2.
 
 Useful commands to administrate:
 * ``docker --help`` 
@@ -174,7 +175,7 @@ Useful commands to administrate:
 
 ### Further Dockerfile development: programming Apache to start when running docker:
 
-Copied to my docker directory (where Dockerfile is):
+I put to my docker directory ("liz-docker-lamp" where Dockerfile is):
 * ``start-apache2.sh``, 
 * ``apache_default``, 
 * ``apache2.conf`` 
@@ -194,7 +195,6 @@ supervisord.conf:
 ````
 [supervisord]
 nodaemon=true                ; start in foreground 
-
 [program:apache2]
 command=/bin/bash -c "source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"
 ````
@@ -243,15 +243,101 @@ CMD ["supervisord", "-n"]
 
 The default web page loads in Google Chrome:
 
-![1 apache_runs_in_docker.png](_images/01_apache_runs_in_docker.png)
-
-![2 apache-runs-in-docker.png](_images/01-apache-runs-in-docker.png)
-
-![3 apacherunsindocker.png](_images/01apacherunsindocker.png)
-
-![raw url to image](https://github.com/starliz/starliz.github.io/blob/master/_images/01-apache-runs-in-docker.png)
+![apache-runs-in-docker.png]({{ site.url }}/assets/01-apache-runs-in-docker.png)
 
 
+### NEXT: User homepages
+
+NO NEED??? Added to Dockerfile line to enable userdir module: ``$ sudo a2enmod userdir``
+
+I don't create directory in user's home, since apache in docker runs as root, I put my custom index.html to /var/www/html/index.html (found this path in config). And hence it can be accessed by same address "http://localhost:8080/".
+
+![lamp-custom-html.png]({{ site.url }}/assets/02-lamp-custom-html.png)
+
+TEST IT BY IP
+
+### PHP and  MYSQL
+
+Added to Dockerfile installation of:
+* ``libapache2-mod-php5`` -  Apache PHP5 module
+* ``php5-mysql`` - To get MySQL support in PHP
+* ``php-apc`` -  Alternative PHP Cache (APC)
+* ``php5-mcrypt`` - PHP module
+* ``mysql-server`` - MySQL
+* ``pwgen`` - to create password for mysql user.
+
+Other additions to Dockerfile:
+````
+ADD start-mysqld.sh /start-mysqld.sh
+ADD my.cnf /etc/mysql/conf.d/my.cnf
+ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
+VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
+EXPOSE 3306
+````
+
+I put files to docker directory:
+
+start-mysql.sh:
+````
+#!/bin/bash
+service mysql start
+````
+
+my.cnf:
+````
+[mysqld]
+bind-address=0.0.0.0
+````
+
+And ``create_mysql_admin_user.sh`` - creates user with password using utility pwgen, grants priveledges.
+
+To supervisord.conf:
+````
+[program:mysqld]
+command=/start-mysqld.sh
+numprocs=1
+autostart=true
+autorestart=true
+````
+
+### The PHP app page
+
+Add the app example, template I took from from <https://github.com/fermayo/hello-world-lamp/blob/master/index.php> (Apache license 2.0) and modified it a bit.
+
+Additions to Dockerfile:
+````
+ADD index.php /app/index.php
+RUN rm -fr /var/www/html && ln -s /app /var/www/html
+ADD run.sh /run.sh
+RUN chmod 755 /*.sh
+CMD ["/run.sh"]
+````
+
+``#CMD ["supervisord", "-n"]`` - removed.
+
+Content of ``run.sh`` file I copied from: <https://github.com/tutumcloud/lamp/blob/master/run.sh>
+
+Building image:
+````
+[liz@localhost liz-docker-lamp]$ docker build -t liz/lamp .
+Sending build context to Docker daemon 23.04 kB
+Step 1/27 : FROM ubuntu:trusty
+...
+Step 27/27 : CMD /run.sh
+...
+Successfully built 20baf749aa64
+
+````
+
+Run:
+````
+docker run -d -p 80:80 -p 3306:3306 liz/lamp
+````
+``-d`` - detach, run container in background and print container ID
+
+
+
+* * *
 
 ### Used articles:
 
@@ -262,6 +348,10 @@ The default web page loads in Google Chrome:
 [Some docker post-installation set up](https://docs.docker.com/engine/installation/linux/linux-postinstall/)
 
 [Understanding Docker](https://docs.docker.com/engine/understanding-docker/)
+
+[Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
+
+[Some other ideas for docker files](https://github.com/nickistre/docker-lamp/tree/ubuntu-14.04)
 
 [Docker cheat sheet](https://github.com/wsargent/docker-cheat-sheet)
 
