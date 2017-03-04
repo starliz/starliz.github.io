@@ -11,7 +11,7 @@ date: 2017-02-17
 
 ### LAMP inside a docker:
 
-I was hesitant about installing LAMP into my home directory, but I got a hint to use docker. So I decided to try it for this homework. [The task details are here](http://terokarvinen.com/2017/agenda-for-linux-basics-dat8tf063-29-spring-2017#comment-22169).
+I was hesitant about installing LAMP into my home directory and at the same time wanted to preserve results after exercising, but I got a hint to use docker. So I decided to try it for this homework. [The task details are here](http://terokarvinen.com/2017/agenda-for-linux-basics-dat8tf063-29-spring-2017#comment-22169).
 
 All resulting docker files can be found in [my liz-docker-lamp repo](https://github.com/starliz/liz-docker-lamp).
 
@@ -140,6 +140,8 @@ This message shows that your installation appears to be working correctly.
 Since the task was to set up LAMP step by step, I couldn't just take ready made solution and run it, but I had to try to create my own image.
 
 The examples of Dockerfile and some parts for supervisord.conf I took [here](https://github.com/tutumcloud/lamp) and [here](https://github.com/nickistre/docker-lamp/tree/ubuntu-14.04)
+
+NOTE: I didn't bother with user pages, just put index files to default root directory because it runs in docker isolated anyway.
 
 This is my initial Dockerfile (Each instruction creates a new layer in the image.):
 
@@ -492,6 +494,8 @@ TODO: update and delete is easy and hints can be found in [this page](http://ter
 Added to Dockerfile installation of:
 * ``libapache2-mod-php5`` -  Apache PHP5 module
 * ``php5-mysql`` - To get MySQL support in PHP
+
+NOTE: php7 is latest
 
 Additions to Dockerfile:
 ````
