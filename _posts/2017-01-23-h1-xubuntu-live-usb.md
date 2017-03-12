@@ -11,8 +11,8 @@ date: 2017-01-23
 
 ### Some background:
 
-I took the course "Linux basics"" at Haaga-Helia UAS to boost my confidence as a Linux professional,
-to recall things I used to do before but partially forgot. 
+I took the course "Linux basics" at Haaga-Helia UAS to boost my confidence as a Linux professional,
+to refresh memory traces about things I used to do before but partially forgot. 
 And to fight [impostor syndrome](https://en.wikipedia.org/wiki/Impostor_syndrome) - 
 I don't have formal ICT education, I'm biologist, so I take technical courses to support skills 
 and knowledge which I got working in ICT.
@@ -33,7 +33,8 @@ First I used HTTPS:
 
 ![h1-011-git-https.png]({{ site.url }}/assets/h1-011-git-https.png)
 
-Then I cloned it locally:
+I cloned it locally:
+
 ````
 [liz@localhost src]$ git clone https://github.com/starliz/hh_linux_basics.git
 [liz@localhost src]$ ls
@@ -56,6 +57,8 @@ Changes not staged for commit:
 [liz@localhost hh_linux_basics]$ git push origin master
 ````
 
+Initially it was just html file in git repo, then I changed it to PDF, and later came to GitHub pages form (using markdown and jekyll).
+
 Made a commit and tried push it to GitHub, but then I got login request and recalled that there is a way to get rid of it. 
 
 ![h1-012-git-clone-ssh.png]({{ site.url }}/assets/h1-012-git-clone-ssh.png)
@@ -76,6 +79,7 @@ After this I could push from my local repo to origin without giving login and pa
 And I used gitk to view git tree: 
 
 ![h1-02-gitk.png]({{ site.url }}/assets/h1-02-gitk.png)
+
 
 ### Creating USB stick itself:
 
@@ -187,9 +191,20 @@ Terminal output:
 [liz@localhost bin]$ ls -al machinotero.sh 
 -rwxrwxr-x. 1 liz liz 2699 Jan 18 14:56 machinotero.sh
 [liz@localhost bin]$ sudo bash ~/bin/machinotero.sh
-uname -a; cat /etc/lsb-release; cat /var/lib/acpi-support/*-*; free -m; df -h; lshw; ifconfig; iwconfig; ip link; ip addr; ip route; ip rule; ip neigh; ip tunnel; ip maddr; ip mroute; dpkg --list linux-image* xserver-xorg hal; grep -v ^# /etc/apt/sources.list; cat /etc/apt/sources.list.d/*; dpkg --list xresprobe dmidecode lshw vbetool smartmontools; tail /var/log/apache/error.log; tail /var/log/apache2/error.log; lsmod; dmidecode; lspci; lspci -n; lspci -v; lsusb; fdisk -l; mount; cat /etc/fstab; grep /dev/sda /etc/fstab; smartctl -a /dev/sda; tune2fs -l /dev/sda1; tune2fs -l /dev/sda2; grep /dev/sda /var/log/syslog; ddcprobe; vbetool vbefp panelsize; dmesg; dmesg; head -25 /var/log/syslog; tail -25 /var/log/syslog; cat /etc/X11/xorg.conf; cat /var/log/Xorg.0.log; lsusb -v; packages *driver* n9-usb-copy-home.sh usb-nat-enable *grub* *firefox* *thunderbird* 915resolution*; 
+uname -a; cat /etc/lsb-release; cat /var/lib/acpi-support/*-*; free -m; df -h; lshw; ifconfig; iwconfig; 
+ip link; ip addr; ip route; ip rule; ip neigh; ip tunnel; ip maddr; ip mroute; dpkg --list linux-image* xserver-xorg hal; 
+grep -v ^# /etc/apt/sources.list; cat /etc/apt/sources.list.d/*; dpkg --list xresprobe dmidecode lshw vbetool smartmontools; 
+tail /var/log/apache/error.log; tail /var/log/apache2/error.log; lsmod; dmidecode; lspci; lspci -n; lspci -v; lsusb; fdisk -l; 
+mount; cat /etc/fstab; grep /dev/sda /etc/fstab; smartctl -a /dev/sda; tune2fs -l /dev/sda1; tune2fs -l /dev/sda2; 
+grep /dev/sda /var/log/syslog; ddcprobe; vbetool vbefp panelsize; dmesg; dmesg; head -25 /var/log/syslog; 
+tail -25 /var/log/syslog; cat /etc/X11/xorg.conf; cat /var/log/Xorg.0.log; lsusb -v; 
+packages *driver* n9-usb-copy-home.sh usb-nat-enable *grub* *firefox* *thunderbird* 915resolution*; 
 Done.
 ````
+
+It seems to me, it should run commands and return stderr and stdout, output should have headings and sections, print disk info, print package versions.
+But obviously there is something wrong and I see only list of commands without desired output. 
+TODO: check what's wrong.
 
 
 History of modifications can be found in [Git repository: github.com/starliz/starliz.github.io](https://github.com/starliz/starliz.github.io/commits/master).
