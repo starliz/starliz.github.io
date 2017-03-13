@@ -548,4 +548,15 @@ see [here](https://github.com/starliz/liz-docker-lamp/blob/master/info.txt), it 
 
 [Read MySQL with PHP](http://terokarvinen.com/2016/read-mysql-database-with-php-php-pdo)
 
+Alternative way is to use [Django-Apache-Python](http://terokarvinen.com/2017/django-on-apache-with-python-3-on-ubuntu-16-04)
+
+And some more tutorials from Tero Karvinen:
+* <http://terokarvinen.com/2008/install-apache-web-server-on-ubuntu-4>
+* <http://terokarvinen.com/2016/mysql-install-and-one-table-database-sql-crud-tutorial-for-ubuntu>
+* <http://terokarvinen.com/2012/change-mysql-password-dpkg-reconfigure-mysql-server-5-1-ubuntu-debian-error-1045>
+* <http://php.net/manual/en/tutorial.forms.php>
+* <http://terokarvinen.com/2016/read-mysql-database-with-php-php-pdo>
+* <http://terokarvinen.com/2016/instant-firewall-sudo-ufw-enable>
+
+
 ##### “ Copyright 2017 Lidia Zalevskaya, GNU General Public License, version 3 or later.”

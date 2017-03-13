@@ -7,7 +7,7 @@ date: 2017-01-23
 
 #### HAAGA-HELIA University of Applied Sciences.
 
-#### Updated on 12.03.2017
+#### Updated on 13.03.2017
 
 ### Some background:
 
@@ -57,7 +57,7 @@ Changes not staged for commit:
 [liz@localhost hh_linux_basics]$ git push origin master
 ````
 
-Initially it was just html file in git repo, then I changed it to PDF, and later came to GitHub pages form (using markdown and jekyll).
+Initially it was just html file in git repo, then I changed it to PDF, and later came to GitHub pages form (using markdown and jekyll). See [homework 2](https://starliz.github.io/2017/01/29/h2-licenses.html) for details about GitHub pages with markdown and Jekyll.
 
 Made a commit and tried push it to GitHub, but then I got login request and recalled that there is a way to get rid of it. 
 
@@ -207,7 +207,7 @@ But obviously there is something wrong and I see only list of commands without d
 TODO: check what's wrong.
 
 
-History of modifications can be found in [Git repository: github.com/starliz/starliz.github.io](https://github.com/starliz/starliz.github.io/commits/master).
+History of modifications can be found in Git repository: [github.com/starliz/starliz.github.io](https://github.com/starliz/starliz.github.io/commits/master).
 
 
 * * *
@@ -219,5 +219,30 @@ History of modifications can be found in [Git repository: github.com/starliz/sta
 [How to add a new ssh key to your GitHub account.](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
 
 [How to create and use Live USB](https://fedoraproject.org/wiki/How_to_create_and_use_Live_USB)
+
+### Useful links and keywords collected over whole course:
+
+BIOS vs [UEFI](https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
+
+[FHS (Filesystem Hierarchy Standard)](http://www.pathname.com/fhs/pub/fhs-2.3.html)
+
+Search Engine Optimization
+
+[Google Analytics](https://www.google.com/analytics).
+
+Internet stack (one page linking all together): [Wikipedia: Internet protocol suite](https://en.wikipedia.org/wiki/Internet_protocol_suite)
+
+[The Bandit game to learn CLI basics](http://overthewire.org/wargames/bandit)
+
+<https://www.khanacademy.org/>
+
+<https://www.freecodecamp.com/>
+
+<https://cryptopals.com/>
+
+<http://sqlzoo.net/>
+
+Coding Game <https://www.codingame.com/start>
+
 
 ##### “ Copyright 2017 Lidia Zalevskaya, GNU General Public License, version 3 or later.”
