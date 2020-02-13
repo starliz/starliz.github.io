@@ -197,6 +197,13 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 Adding to Dockerfile:
 ````
+# install supervisord
+RUN apt-get install -y supervisor
+RUN mkdir -p /var/log/supervisor
+ADD supervisord.conf /etc/
+````
+and
+````
 RUN apt-get install -y bash-completion vim tmux openssh-server openssh-client passwd
 RUN mkdir -p /var/run/sshd
 RUN sed -ri 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
