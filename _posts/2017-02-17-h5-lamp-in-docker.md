@@ -310,6 +310,12 @@ The default web page loads in Google Chrome:
 
 I don't create directory in user's home, since apache in docker runs as root, I put my custom index.html to /var/www/html/index.html (found this path in config). And hence it can be accessed by same address "http://localhost:8080/".
 
+Add to Dockerfile:
+````
+# Create a folder for html files
+ADD index.html /var/www/html/index.html
+````
+
 ![lamp-custom-html.png]({{ site.url }}/assets/02-lamp-custom-html.png)
 
 TODO: TEST IT BY IP
