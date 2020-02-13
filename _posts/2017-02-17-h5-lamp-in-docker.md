@@ -316,6 +316,11 @@ Add to Dockerfile:
 ADD index.html /var/www/html/index.html
 ````
 
+Run web server inside a container: 
+``docker run -p 8080:80 liz/lamp``
+
+and access it via browser (http://localhost:8080/) on the same laptop:
+
 ![lamp-custom-html.png]({{ site.url }}/assets/02-lamp-custom-html.png)
 
 TODO: TEST IT BY IP
